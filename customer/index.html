@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<title>Anjali Tours &amp; Travel - TUV 300 Booking</title>
+<meta name="theme-color" content="#0f5132" />
+<link rel="manifest" href="manifest.json" />
+<link rel="icon" href="icons/icon-192.png" />
+<link rel="apple-touch-icon" href="icons/icon-192.png" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<header class="app-header">
+  <div class="header-inner">
+    <div class="brand">
+      <span class="brand-name">Anjali Tours &amp; Travel</span>
+      <span class="brand-sub" id="vehicleLabel">TUV 300 <span data-i18n="brand_sub">Booking</span></span>
+    </div>
+    <div class="header-right">
+      <div class="lang-switcher" id="langSwitcher">
+        <button class="lang-pill" data-lang="en">EN</button>
+        <button class="lang-pill" data-lang="hi">हिन्दी</button>
+        <button class="lang-pill" data-lang="hl">Hinglish</button>
+      </div>
+      <a class="whatsapp-pill" id="headerWhatsApp" target="_blank" rel="noopener" data-i18n="whatsapp_pill">
+        WhatsApp
+      </a>
+    </div>
+  </div>
+</header>
+
+<main class="app-main" id="app">
+
+  <!-- ============ HOME VIEW ============ -->
+  <section class="view" id="view-home">
+    <div class="card hero-card">
+      <h1 id="homeTitle">Comfortable travel from <span id="baseCityLabel">Kalwan</span> and nearby cities</h1>
+      <p class="muted" id="homeVehicle">Mahindra TUV 300</p>
+      <button class="btn btn-primary btn-large" id="btnGoBook" data-i18n="btn_check_book">Check Date &amp; Book</button>
+      <a class="btn btn-secondary btn-large" id="btnWhatsAppUs" target="_blank" rel="noopener" data-i18n="btn_whatsapp_us">WhatsApp Us</a>
+    </div>
+
+    <div class="card">
+      <h2 class="section-title" data-i18n="why_choose_us">Why Choose Us</h2>
+      <ul class="feature-list">
+        <li data-i18n="feature_1">Comfortable ride</li>
+        <li data-i18n="feature_2">Advance booking</li>
+        <li data-i18n="feature_3">Clear fare confirmation</li>
+        <li data-i18n="feature_4">WhatsApp support</li>
+      </ul>
+    </div>
+
+    <p class="privacy-note" data-i18n="privacy_note">Your details are used only for booking and travel communication.</p>
+  </section>
+
+  <!-- ============ BOOKING FORM VIEW ============ -->
+  <section class="view hidden" id="view-book">
+    <div class="card">
+      <h2 class="section-title"><span data-i18n="book_your">Book Your</span> <span id="vehicleLabel2">TUV 300</span></h2>
+
+      <form id="bookingForm">
+        <label class="field-label" for="travelDate" data-i18n="travel_date">Travel Date</label>
+        <input type="date" id="travelDate" class="field-input" required />
+        <p class="field-msg" id="dateMsg"></p>
+
+        <label class="field-label" for="pickup" data-i18n="pickup_location">Pickup Location</label>
+        <select id="pickup" class="field-input" required aria-label="Pickup Location">
+          <option value="" selected disabled>Select pickup location</option>
+          <option value="kalwan">Kalwan</option>
+          <option value="abhona">Abhona</option>
+          <option value="satana">Satana</option>
+          <option value="deola">Deola</option>
+          <option value="chandwad">Chandwad</option>
+          <option value="dindori">Dindori</option>
+          <option value="surgana">Surgana</option>
+          <option value="malegaon">Malegaon</option>
+          <option value="yeola">Yeola</option>
+          <option value="nashik">Nashik</option>
+        </select>
+        <input type="text" id="pickupPlace" class="field-input" maxlength="120" data-i18n-placeholder="pickup_place_ph" placeholder="Pickup Location (e.g. Kalwan Bus Stand)" />
+        <div class="location-btn-row">
+          <button type="button" class="btn btn-secondary btn-inline location-btn" id="btnPickupMaps" data-i18n="select_pickup_btn">&#128205; Select Pickup Location</button>
+          <button type="button" class="btn btn-secondary btn-inline location-btn" id="btnPickupCurrentLoc" data-i18n="use_current_location">&#128205; Use My Current Location</button>
+        </div>
+        <button type="button" class="link-btn location-link-toggle" id="togglePickupLink" data-i18n="paste_maps_link">Paste Google Maps Link</button>
+        <input type="url" id="pickupMapsLink" class="field-input hidden" data-i18n-placeholder="maps_link_ph" placeholder="https://maps.google.com/..." />
+        <p class="field-msg" id="pickupLocMsg"></p>
+
+        <label class="field-label" for="destination" data-i18n="destination_location">Destination / Drop Location</label>
+        <input type="text" id="destination" class="field-input" maxlength="200" required data-i18n-placeholder="destination_ph" placeholder="Enter city, village, hotel, airport, station or full address" />
+        <div class="location-btn-row">
+          <button type="button" class="btn btn-secondary btn-inline location-btn" id="btnDestinationMaps" data-i18n="select_destination_btn">&#128205; Select Destination</button>
+          <button type="button" class="btn btn-secondary btn-inline location-btn" id="btnDestinationCurrentLoc" data-i18n="use_current_location">&#128205; Use My Current Location</button>
+        </div>
+        <button type="button" class="link-btn location-link-toggle" id="toggleDestinationLink" data-i18n="paste_maps_link">Paste Google Maps Link</button>
+        <input type="url" id="destinationMapsLink" class="field-input hidden" data-i18n-placeholder="maps_link_ph" placeholder="https://maps.google.com/..." />
+        <p class="field-msg" id="destinationLocMsg"></p>
+
+        <label class="field-label" data-i18n="trip_type">Trip Type</label>
+        <div class="radio-row">
+          <label class="radio-pill"><input type="radio" name="tripType" value="One Way" checked /> <span data-i18n="one_way">One Way</span></label>
+          <label class="radio-pill"><input type="radio" name="tripType" value="Round Trip" /> <span data-i18n="round_trip">Round Trip</span></label>
+        </div>
+
+        <label class="field-label" for="customerName" data-i18n="passenger_name">Passenger Name</label>
+        <input type="text" id="customerName" class="field-input" maxlength="80" required />
+
+        <label class="field-label" for="whatsapp" data-i18n="whatsapp_number">WhatsApp Number</label>
+        <input type="tel" id="whatsapp" class="field-input" inputmode="numeric" maxlength="13" required />
+
+        <label class="field-label" for="passengers" data-i18n="num_passengers">Number of Passengers</label>
+        <input type="number" id="passengers" class="field-input" min="1" max="20" value="1" required />
+
+        <label class="field-label" for="note" data-i18n="note_optional">Additional Note (optional)</label>
+        <textarea id="note" class="field-input" maxlength="300" rows="3"></textarea>
+
+        <p class="fare-note" data-i18n="fare_note">Fare will be confirmed by Anjali Tours &amp; Travel after reviewing your trip details.</p>
+
+        <p class="field-msg error" id="formError"></p>
+
+        <button type="submit" class="btn btn-primary btn-large" id="submitBtn" data-i18n="submit_booking">Submit Booking Request</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ============ CONFIRMATION VIEW ============ -->
+  <section class="view hidden" id="view-confirm">
+    <div class="card confirm-card">
+      <h2 class="section-title" data-i18n="booking_received">Booking Request Received</h2>
+      <div class="confirm-row"><span data-i18n="booking_id_label">Booking ID</span><b id="cBookingId">-</b></div>
+      <div class="confirm-row"><span data-i18n="travel_date_label">Travel Date</span><b id="cDate">-</b></div>
+      <div class="confirm-row"><span data-i18n="pickup_label">Pickup</span><b id="cPickup">-</b></div>
+      <div class="confirm-row hidden" id="cPickupLocRow"><span data-i18n="pickup_location">Pickup Location</span><b id="cPickupLoc">-</b></div>
+      <div class="confirm-row"><span data-i18n="destination_label">Destination</span><b id="cDestination">-</b></div>
+      <div class="confirm-row hidden" id="cDestinationLocRow"><span data-i18n="destination_location">Destination / Drop Location</span><b id="cDestinationLoc">-</b></div>
+      <div class="confirm-row"><span data-i18n="customer_name_label">Customer Name</span><b id="cName">-</b></div>
+      <div class="confirm-row"><span data-i18n="whatsapp_number_label">WhatsApp Number</span><b id="cWhatsApp">-</b></div>
+      <div class="status-badge" id="cStatus" data-i18n="status_waiting_fare">Waiting for fare confirmation</div>
+      <p class="muted" data-i18n="confirm_note">Anjali Tours &amp; Travel will contact you on WhatsApp with the final fare and advance payment details.</p>
+      <div class="inline-row" id="cLocationLinks">
+        <a class="btn btn-secondary btn-inline hidden" id="btnViewPickup" target="_blank" rel="noopener" data-i18n="view_pickup">&#128205; View Pickup</a>
+        <a class="btn btn-secondary btn-inline hidden" id="btnViewDestination" target="_blank" rel="noopener" data-i18n="view_destination">&#128205; View Destination</a>
+      </div>
+      <a class="btn btn-primary btn-large" id="btnContactWhatsApp" target="_blank" rel="noopener" data-i18n="contact_whatsapp">Contact on WhatsApp</a>
+      <button class="btn btn-secondary btn-large" id="btnEnableNotify" data-i18n="enable_notifications">Enable Booking Updates</button>
+      <p class="field-msg" id="notifyMsg"></p>
+      <button class="btn btn-secondary btn-large" id="btnNewBooking" data-i18n="book_another">Book Another Trip</button>
+    </div>
+  </section>
+
+  <!-- ============ ERROR / OFFLINE VIEW ============ -->
+  <section class="view hidden" id="view-error">
+    <div class="card">
+      <h2 class="section-title" data-i18n="error_unavailable_title">Booking service is temporarily unavailable</h2>
+      <p class="muted" id="cityErrorMsg" data-i18n="err_locations_unavailable">Pickup &amp; destination locations could not be loaded. Please retry.</p>
+      <button class="btn btn-primary btn-large" id="btnRetryCities" data-i18n="retry">Retry</button>
+      <a class="btn btn-secondary btn-large" id="btnErrorWhatsApp" target="_blank" rel="noopener">WhatsApp 8308345237</a>
+      <button class="btn btn-secondary btn-large" id="btnBackHome" data-i18n="back_home">Back to Home</button>
+    </div>
+  </section>
+
+</main>
+
+<div class="loading-overlay hidden" id="loadingOverlay">
+  <div class="loading-box">
+    <div class="spinner"></div>
+    <p id="loadingText">Loading...</p>
+  </div>
+</div>
+
+<!-- OneSignal Web Push SDK - used only if the customer taps "Enable Booking
+     Updates". See docs/PUSH-NOTIFICATIONS-SETUP.md. Safe no-op if
+     ONESIGNAL_APP_ID in config.js is left blank. -->
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script src="config.js"></script>
+<script src="i18n.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

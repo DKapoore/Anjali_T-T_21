@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<title>Anjali Tours - Admin</title>
+<meta name="theme-color" content="#0f5132" />
+<link rel="manifest" href="manifest.json" />
+<link rel="icon" href="icons/icon-192.png" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<!-- ============ LOGIN VIEW ============ -->
+<section class="view" id="view-login">
+  <div class="login-wrap">
+    <div class="lang-switcher lang-switcher-login" id="langSwitcherLogin">
+      <button class="lang-pill" data-lang="en">EN</button>
+      <button class="lang-pill" data-lang="hi">हिन्दी</button>
+      <button class="lang-pill" data-lang="hl">Hinglish</button>
+    </div>
+    <h1 class="login-title" data-i18n="login_title">Anjali Tours &amp; Travel</h1>
+    <p class="login-sub" data-i18n="login_sub">Admin Login</p>
+    <div class="card">
+      <label class="field-label" for="loginUsername" data-i18n="username">Username</label>
+      <input type="text" id="loginUsername" class="field-input" autocomplete="username" />
+      <label class="field-label" for="loginPassword" data-i18n="password">Password</label>
+      <input type="password" id="loginPassword" class="field-input" autocomplete="current-password" />
+      <p class="field-msg error" id="loginError"></p>
+      <button class="btn btn-primary btn-large" id="btnLogin" data-i18n="log_in">Log In</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ APP SHELL (shown after login) ============ -->
+<div id="appShell" class="hidden">
+  <header class="app-header">
+    <div class="header-inner">
+      <button class="hamburger-btn" id="btnHamburger" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <span class="brand-name" id="pageTitle">Dashboard</span>
+      <button class="link-btn header-logout" id="btnLogout" data-i18n="log_out">Log Out</button>
+    </div>
+  </header>
+
+  <!-- ---------- SLIDE-OUT MENU (hamburger drawer) ---------- -->
+  <div class="drawer-backdrop hidden" id="drawerBackdrop"></div>
+  <nav class="drawer" id="drawer" aria-hidden="true">
+    <div class="drawer-header">
+      <span class="drawer-brand">Anjali Tours &amp; Travel</span>
+      <span class="drawer-sub" data-i18n="admin_menu">Admin Menu</span>
+    </div>
+    <div class="lang-switcher lang-switcher-drawer" id="langSwitcherDrawer">
+      <button class="lang-pill" data-lang="en">EN</button>
+      <button class="lang-pill" data-lang="hi">हिन्दी</button>
+      <button class="lang-pill" data-lang="hl">Hinglish</button>
+    </div>
+    <button class="drawer-item active" data-view="dashboard">
+      <span class="drawer-icon">&#9635;</span> <span data-i18n="nav_dashboard">Dashboard</span>
+    </button>
+    <button class="drawer-item" data-view="bookings">
+      <span class="drawer-icon">&#128197;</span> <span data-i18n="nav_bookings">Bookings</span>
+    </button>
+    <button class="drawer-item" data-view="calendar">
+      <span class="drawer-icon">&#128198;</span> <span data-i18n="nav_calendar">Calendar</span>
+    </button>
+    <button class="drawer-item" data-view="settings">
+      <span class="drawer-icon">&#9881;</span> <span data-i18n="nav_settings">Settings</span>
+    </button>
+    <div class="drawer-footer">
+      <button class="drawer-item drawer-logout" id="drawerLogout">
+        <span class="drawer-icon">&#8630;</span> <span data-i18n="log_out">Log Out</span>
+      </button>
+    </div>
+  </nav>
+
+  <main class="app-main">
+
+    <!-- ---------- DASHBOARD ---------- -->
+    <section class="view" id="view-dashboard">
+      <div class="stat-grid">
+        <div class="stat-card"><span class="stat-label" data-i18n="stat_today">TODAY</span><span class="stat-value" id="statToday">-</span><span class="stat-sub" data-i18n="stat_trips">Trips</span></div>
+        <div class="stat-card"><span class="stat-label" data-i18n="stat_upcoming">UPCOMING</span><span class="stat-value" id="statUpcoming">-</span><span class="stat-sub" data-i18n="stat_trips">Trips</span></div>
+        <div class="stat-card"><span class="stat-label" data-i18n="stat_pending">PENDING</span><span class="stat-value" id="statPending">-</span><span class="stat-sub" data-i18n="stat_requests">Requests</span></div>
+        <div class="stat-card"><span class="stat-label" data-i18n="stat_payment">PAYMENT</span><span class="stat-value" id="statPayment">-</span><span class="stat-sub" data-i18n="stat_pending_sub">Pending</span></div>
+        <div class="stat-card"><span class="stat-label" data-i18n="stat_confirmed">CONFIRMED</span><span class="stat-value" id="statConfirmed">-</span><span class="stat-sub" data-i18n="stat_bookings_sub">Bookings</span></div>
+        <div class="stat-card"><span class="stat-label" data-i18n="stat_cancelled">CANCELLED</span><span class="stat-value" id="statCancelled">-</span><span class="stat-sub" data-i18n="stat_expired_sub">/ Expired</span></div>
+      </div>
+      <div class="card" id="pushBanner">
+        <p class="field-msg" id="pushBannerText" data-i18n="admin_push_off">Turn on notifications to get alerted about new bookings and payments.</p>
+        <button class="btn btn-secondary" id="btnEnableAdminPush" data-i18n="enable_admin_push">Enable Admin Notifications</button>
+      </div>
+    </section>
+
+    <!-- ---------- BOOKINGS LIST ---------- -->
+    <section class="view hidden" id="view-bookings">
+      <input type="text" id="bookingSearch" class="field-input" data-i18n-placeholder="search_placeholder" placeholder="Search Booking ID, Name or WhatsApp" />
+      <div class="filter-row" id="filterRow">
+        <button class="filter-chip active" data-filter="" data-i18n="filter_all">All</button>
+        <button class="filter-chip" data-filter="today" data-i18n="filter_today">Today</button>
+        <button class="filter-chip" data-filter="upcoming" data-i18n="filter_upcoming">Upcoming</button>
+        <button class="filter-chip" data-filter="pending" data-i18n="filter_pending">Pending</button>
+        <button class="filter-chip" data-filter="payment_pending" data-i18n="filter_payment">Payment</button>
+        <button class="filter-chip" data-filter="confirmed" data-i18n="filter_confirmed">Confirmed</button>
+        <button class="filter-chip" data-filter="completed" data-i18n="filter_completed">Completed</button>
+        <button class="filter-chip" data-filter="cancelled" data-i18n="filter_cancelled">Cancelled</button>
+      </div>
+      <div id="bookingList"></div>
+    </section>
+
+    <!-- ---------- BOOKING DETAIL ---------- -->
+    <section class="view hidden" id="view-detail">
+      <button class="link-btn" id="btnBackToList">&larr; <span data-i18n="back_to_bookings">Back to Bookings</span></button>
+      <div class="card" id="detailCard"></div>
+    </section>
+
+    <!-- ---------- CALENDAR ---------- -->
+    <section class="view hidden" id="view-calendar">
+      <div class="card">
+        <div class="cal-nav">
+          <button class="link-btn" id="calPrev">&larr; Prev</button>
+          <span id="calMonthLabel">-</span>
+          <button class="link-btn" id="calNext">Next &rarr;</button>
+        </div>
+        <div class="cal-grid" id="calGrid"></div>
+        <div class="cal-legend">
+          <span><i class="dot dot-confirmed"></i>Confirmed</span>
+          <span><i class="dot dot-pending"></i>Pending</span>
+          <span><i class="dot dot-blocked"></i>Blocked</span>
+        </div>
+      </div>
+      <div class="card">
+        <h3 class="section-title">Block a date</h3>
+        <label class="field-label" for="blockDate">Date</label>
+        <input type="date" id="blockDate" class="field-input" />
+        <label class="field-label" for="blockReason">Reason</label>
+        <input type="text" id="blockReason" class="field-input" placeholder="e.g. Vehicle maintenance" />
+        <button class="btn btn-primary" id="btnBlockDate">Block Date</button>
+      </div>
+    </section>
+
+    <!-- ---------- SETTINGS ---------- -->
+    <section class="view hidden" id="view-settings">
+      <div class="card">
+        <h3 class="section-title" data-i18n="business_settings">Business Settings</h3>
+        <label class="field-label" data-i18n="business_name">Business Name</label>
+        <input type="text" id="setBusinessName" class="field-input" />
+        <label class="field-label" data-i18n="whatsapp_number">WhatsApp Number (with country code, e.g. 9183...)</label>
+        <input type="text" id="setWhatsApp" class="field-input" />
+        <label class="field-label" data-i18n="contact_number">Contact Number</label>
+        <input type="text" id="setContactNumber" class="field-input" />
+        <label class="field-label" data-i18n="vehicle_name">Vehicle Name</label>
+        <input type="text" id="setVehicle" class="field-input" />
+        <label class="field-label" data-i18n="base_city">Base City</label>
+        <input type="text" id="setBaseCity" class="field-input" />
+        <label class="field-label" data-i18n="address">Address</label>
+        <input type="text" id="setAddress" class="field-input" />
+        <label class="field-label" data-i18n="tagline">Optional Tagline</label>
+        <input type="text" id="setTagline" class="field-input" />
+        <label class="field-label" data-i18n="advance_percent">Advance %</label>
+        <input type="number" id="setAdvancePercent" class="field-input" />
+        <label class="field-label" data-i18n="hold_minutes">Booking Hold Minutes</label>
+        <input type="number" id="setHoldMinutes" class="field-input" />
+        <button class="btn btn-primary" id="btnSaveBusiness" data-i18n="save_business">Save Business Settings</button>
+      </div>
+
+      <div class="card">
+        <h3 class="section-title" data-i18n="upi_settings">UPI Payment Settings</h3>
+        <label class="field-label" data-i18n="upi_id">UPI ID</label>
+        <input type="text" id="setUpiId" class="field-input" placeholder="name@bank" />
+        <label class="field-label" data-i18n="upi_business_name">UPI Business Name (shown in UPI apps)</label>
+        <input type="text" id="setUpiName" class="field-input" />
+        <label class="field-label">Static QR Image URL (optional)</label>
+        <input type="text" id="setUpiQrUrl" class="field-input" placeholder="https://..." />
+        <button class="btn btn-primary" id="btnSaveUpi" data-i18n="save_upi">Save UPI Settings</button>
+      </div>
+
+      <div class="card">
+        <h3 class="section-title" data-i18n="branding_settings">Payment Card Branding</h3>
+        <label class="field-label" data-i18n="business_logo">Business Logo</label>
+        <div id="logoPreviewArea" class="logo-preview-area"></div>
+        <input type="file" id="logoFileInput" accept="image/png,image/jpeg" class="field-input" />
+        <div class="inline-row">
+          <button class="btn btn-secondary btn-inline" id="btnUploadLogo" data-i18n="upload_logo">Upload Logo</button>
+          <button class="btn btn-danger btn-inline" id="btnRemoveLogo" data-i18n="remove_logo">Remove Logo</button>
+        </div>
+        <label class="field-label" data-i18n="card_footer">Card Footer Text</label>
+        <input type="text" id="setCardFooter" class="field-input" />
+        <label class="field-label" data-i18n="card_language">Card Language</label>
+        <select id="setCardLanguage" class="field-input">
+          <option value="EN_HI">English + Hindi</option>
+          <option value="EN">English only</option>
+          <option value="HI">Hindi only</option>
+        </select>
+        <button class="btn btn-primary" id="btnSaveBranding" data-i18n="save_branding">Save Branding Settings</button>
+      </div>
+
+      <div class="card">
+        <h3 class="section-title" data-i18n="pickup_locations">Pickup Locations</h3>
+        <p class="field-msg" data-i18n="pickup_locations_hint">Customers choose Pickup from this list. Destination is typed freely by the customer and is not managed here.</p>
+        <div id="pickupLocList"></div>
+        <label class="field-label" data-i18n="add_new_pickup">Add New Pickup Location</label>
+        <label class="field-label" data-i18n="pickup_name_en">English Name *</label>
+        <input type="text" id="newPickupEn" class="field-input" data-i18n-placeholder="pickup_name_en_ph" placeholder="e.g. Nashik" />
+        <label class="field-label" data-i18n="pickup_name_hi">Hindi Name</label>
+        <input type="text" id="newPickupHi" class="field-input" />
+        <label class="field-label" data-i18n="pickup_name_mr">Marathi Name</label>
+        <input type="text" id="newPickupMr" class="field-input" />
+        <label class="field-label" data-i18n="pickup_name_hinglish">Hinglish Name</label>
+        <input type="text" id="newPickupHinglish" class="field-input" />
+        <button class="btn btn-primary btn-inline" id="btnAddPickup" data-i18n="add">Add</button>
+        <p class="field-msg error" id="pickupLocError"></p>
+      </div>
+
+      <div class="card">
+        <h3 class="section-title" data-i18n="cities">Cities</h3>
+        <p class="field-msg" data-i18n="cities_legacy_note">Legacy list - no longer used for Pickup or Destination. Kept here only for reference.</p>
+        <div id="cityList"></div>
+        <label class="field-label" data-i18n="add_new_city">Add New City</label>
+        <div class="inline-row">
+          <input type="text" id="newCityName" class="field-input" data-i18n-placeholder="city_name_ph" placeholder="City name" />
+          <button class="btn btn-primary btn-inline" id="btnAddCity" data-i18n="add">Add</button>
+        </div>
+      </div>
+
+
+      <div class="card">
+        <h3 class="section-title" data-i18n="message_templates">Message Templates</h3>
+        <div id="templateEditor"></div>
+      </div>
+
+      <div class="card">
+        <h3 class="section-title" data-i18n="notification_settings">Notification Settings</h3>
+        <div id="notificationSettingsArea"></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<div class="loading-overlay hidden" id="loadingOverlay">
+  <div class="loading-box">
+    <div class="spinner"></div>
+    <p id="loadingText">Loading...</p>
+  </div>
+</div>
+
+<!-- Devanagari-capable font for the payment card canvas (section 38) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+<!-- OneSignal Web Push SDK, used only if the admin enables notifications -->
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script src="config.js"></script>
+<script src="i18n.js"></script>
+<script src="paymentcard.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
